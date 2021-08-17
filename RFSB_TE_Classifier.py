@@ -45,16 +45,16 @@ from datetime import datetime
 import os.path
 import sys
 import os
-from multiprocessing import Process
+from multiprocessing import Process 
 
-def run_in_parallel(*fns):
-    proc = []
-    for fn in fns:
-        p = Process(target=fn)
-        p.start()
-        proc.append(p)
-    for p in proc:
-        p.join()
+# def run_in_parallel(*fns):
+#     proc = []
+#     for fn in fns:
+#         p = Process(target=fn)
+#         p.start()
+#         proc.append(p)
+#     for p in proc:
+#         p.join()
 
 ## Methods
 def getArgument(args, title):
@@ -209,13 +209,10 @@ def TE_classify(fastaFile,outputFile):
         sys.exit(0)
     # classify TEs
     print("[INFO] Generate kMer features...")
-    # createFeatures_kmer(fastaFile, kmerConfigFile, tempFileA)
+    createFeatures_kmer(fastaFile, kmerConfigFile, tempFileA)
     print("[INFO] Generate Protein features using RPSTBLASTN...")
-    # createFeatures_prot(fastaFile, dbFile, tempFileB, tempFileC)
+    createFeatures_prot(fastaFile, dbFile, tempFileB, tempFileC)
     print("[INFO] Load Model and classify...")
-
-    run_in_parallel(createFeatures_kmer(fastaFile,kmerConfigFile,tempFileA),
-        createFeatures_prot(fastaFile,dbFile,tempFileB,tempFileC))
     classifyTransposons(tempFileA, tempFileC, dbFile, modelFile, fastaFile, outputFile)
     print("[INFO] Finished...")
     # delete temporary files
